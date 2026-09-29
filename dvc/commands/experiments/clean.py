@@ -22,3 +22,5 @@ def add_parser(experiments_subparsers, parent_parser):
         formatter_class=formatter.RawDescriptionHelpFormatter,
     )
     experiments_clean_parser.set_defaults(func=CmdExperimentsClean)
+
+# track-flaky: commit trivial para disparar CI (2026-09-28)

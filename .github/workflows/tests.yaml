@@ -39,13 +39,6 @@ jobs:
       env:
         UV_LINK_MODE: ${{ 'hardlink' }}
 
-    - name: Cache mypy
-      uses: actions/cache@v6
-      with:
-        path: .mypy_cache
-        key: mypy-${{ runner.os }}-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}
-    - uses: pre-commit/action@v3.0.1
-
   tests:
     timeout-minutes: 20
     runs-on: ubuntu-latest

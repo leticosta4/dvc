@@ -56,7 +56,7 @@ jobs:
         cache-dependency-glob: pyproject.toml
     - run: uv pip install -e ".[dev]" --system
 
-    - name: run tests
+    - name: run tests (py312)
       timeout-minutes: 40
       env:
         PYTHONUTF8: 1

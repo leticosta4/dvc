@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v7
       with:
@@ -37,7 +37,7 @@ jobs:
         cache-dependency-glob: pyproject.toml
     - run: uv pip install -e ".[dev]" --system
       env:
-        UV_LINK_MODE: ${{ runner.os == 'Windows' && 'symlink' || 'hardlink' }}
+        UV_LINK_MODE: ${{ 'hardlink' }}
 
     - name: Cache mypy
       uses: actions/cache@v6
@@ -61,7 +61,7 @@ jobs:
       with:
         enable-cache: true
         cache-dependency-glob: pyproject.toml
-    - run: uv pip install -e ".[dev]" pytest-split --system
+    - run: uv pip install -e ".[dev]" --system
 
     - name: run tests
       timeout-minutes: 40

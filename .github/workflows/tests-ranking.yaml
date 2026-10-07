@@ -1,0 +1,79 @@
+name: Tests ranking
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  RANKING_PACKAGE: "pytest-ranking"
+
+jobs:
+
+  tests:
+    name: ranking (${{ matrix.mode }})
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: rkn_qtf
+            weight: "1-0-0"
+          - mode: rkn_recentfail
+            weight: "0-1-0"
+          - mode: rkn_simchgpath
+            weight: "0-0-1"
+          - mode: rkn_hybrid
+            weight: "1-1-1"
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+    - name: Set up Python (3.12)
+      uses: actions/setup-python@v7
+      with:
+        python-version: "3.12"
+    - uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+        cache-dependency-glob: pyproject.toml
+    - run: uv pip install -e ".[dev]" --system
+
+    - name: Install pytest-ranking
+      run: |
+        uv pip install --system "$RANKING_PACKAGE"
+        uv pip freeze --system
+
+    - name: Restore pytest-ranking cache
+      id: restore-pytest-ranking-cache
+      if: always()
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ github.workspace }}/.pytest_cache/v/pytest_ranking_data
+        key: pytest-ranking-cache-${{ github.workflow }}-${{ runner.os }}-${{ matrix.mode }}
+
+
+    - name: run tests (py312)
+      timeout-minutes: 40
+      env:
+        PYTHONUTF8: 1
+      run: >
+        pytest --ranking --rank-weight=${{ matrix.weight }} -n=logical --dist=worksteal --timeout=300 --durations=0
+        --cov --cov-report=xml --cov-report=term
+        #talvez eu tire essa flag de cov ainda
+
+    - name: Save pytest-ranking cache
+      id: save-pytest-ranking-cache
+      if: always()
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ github.workspace }}/.pytest_cache/v/pytest_ranking_data
+        key: pytest-ranking-cache-${{ github.workflow }}-${{ runner.os }}-${{ matrix.mode }}-${{ github.run_id }}

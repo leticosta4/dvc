@@ -27,13 +27,10 @@ jobs:
         include:
           - mode: rgsm_qtf
             weight: "1-0"
-            want-latest-entry-point-code: true
           - mode: rgsm_recentfail
             weight: "0-1"
-            want-latest-entry-point-code: true
           - mode: rgsm_hybrid
             weight: "1-1"
-            want-latest-entry-point-code: true
     steps:
     - uses: actions/checkout@v7
       with:

@@ -1,4 +1,4 @@
-name: Tests
+name: Tests regsmart no-rtp
 
 on:
   push:
@@ -13,9 +13,12 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  REGSMART_PACKAGE: "git+https://github.com/leticosta4/pytest-regsmart@e8fe612271bc27698cd8285a535209262e8e1a03"
+
 jobs:
 
-  tests:
+  tests-regsmart-nr:
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
@@ -32,11 +35,17 @@ jobs:
         cache-dependency-glob: pyproject.toml
     - run: uv pip install -e ".[dev]" --system
 
+    - name: Install pytest-regsmart
+      run: |
+        uv pip install --system "$REGSMART_PACKAGE"
+        uv pip freeze --system
+
+
     - name: run tests (py312)
       timeout-minutes: 40
       env:
         PYTHONUTF8: 1
       run: >
-        pytest -p no:pytest-regsmart -p no:pytest-ranking -n=logical --dist=worksteal --timeout=300 --durations=0
+        pytest --regsmart --no-rank -n=logical --dist=worksteal --timeout=300 --durations=0
         --cov --cov-report=xml --cov-report=term
 #talvez eu tire essa flag de cov ainda

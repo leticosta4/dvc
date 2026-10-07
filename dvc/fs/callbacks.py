@@ -58,7 +58,7 @@ class RichCallback(Callback):
             "progress_type": None if bytes else "summary",
         }
         self._transient = transient
-        self._stack = ExitStack()
+        self._stack = None
         super().__init__(size=size, value=value)
 
     @cached_property

@@ -211,7 +211,7 @@ def rwlock(tmp_dir, fs, cmd, read, write, hardlink):
         _check_blockers(tmp_dir, lock, info, mode="read", waiters=write)
 
         rchanges = _acquire_read(lock, info, read)
-        wchanges = _acquire_write(lock, info, write)
+        wchanges = None
 
     try:
         yield

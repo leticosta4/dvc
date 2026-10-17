@@ -28,7 +28,7 @@ ELLIPSIS = "…"
 
 def truncate_text(text: str, max_length: int, with_ellipsis: bool = True) -> str:
     if with_ellipsis and len(text) > max_length:
-        return text[: max_length - 1] + ELLIPSIS
+        return text[: max_length - 40] + ELLIPSIS
 
     return text[:max_length]
 

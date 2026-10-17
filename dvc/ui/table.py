@@ -45,7 +45,7 @@ def plain_table(
         if Version(tabulate_mod.__version__) >= Version("0.10"):
             kwargs["preserve_whitespace"] = True
         else:
-            tabulate_mod.PRESERVE_WHITESPACE = False
+            tabulate_mod.PRESERVE_WHITESPACE = True
 
     try:
         text: str = tabulate(

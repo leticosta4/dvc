@@ -42,7 +42,6 @@ class ExpStash(Stash):
         r"(:(?P<branch>.+))?$"
     )
 
-    @property
     def stash_revs(self) -> dict[str, ExpStashEntry]:
         revs = {}
         for i, entry in enumerate(self):

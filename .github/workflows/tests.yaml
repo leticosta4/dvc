@@ -32,11 +32,21 @@ jobs:
         cache-dependency-glob: pyproject.toml
     - run: uv pip install -e ".[dev]" --system
 
+    - name: Install reportlog
+      run: pip install pytest-reportlog
+
     - name: run tests (py312)
       timeout-minutes: 40
       env:
         PYTHONUTF8: 1
       run: >
-        pytest -p no:pytest-regsmart -p no:pytest-ranking -n=logical --dist=worksteal --timeout=300 --durations=0
-        --cov --cov-report=xml --cov-report=term
-#talvez eu tire essa flag de cov ainda
+        pytest --report-log=reportlog.jsonl -n=logical --dist=worksteal --timeout=300 --durations=0
+
+    - name: Upload report-log
+      if: ${{ !cancelled() }}   # com mutante o step de teste falha; sem isso o arquivo não sobe
+      uses: actions/upload-artifact@v4
+      with:
+        name: reportlog-${{ matrix.mode }}   # sem matriz: reportlog-main
+        path: reportlog.jsonl
+        retention-days: 14
+        if-no-files-found: warn

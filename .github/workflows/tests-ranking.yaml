@@ -53,7 +53,7 @@ jobs:
         uv pip freeze --system
 
     - name: Install reportlog
-      run: uv pip install pytest-reportlog
+      run: uv pip install --system pytest-reportlog
 
     - name: Restore pytest-ranking cache
       id: restore-pytest-ranking-cache

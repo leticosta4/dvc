@@ -33,7 +33,7 @@ jobs:
     - run: uv pip install -e ".[dev]" --system
 
     - name: Install reportlog
-      run: uv pip install pytest-reportlog
+      run: uv pip install --system pytest-reportlog
 
     - name: run tests (py312)
       timeout-minutes: 40

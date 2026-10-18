@@ -36,7 +36,7 @@ jobs:
     - run: uv pip install -e ".[dev]" --system
 
     - name: Install reportlog
-      run: pip install pytest-reportlog
+      run: uv pip install pytest-reportlog
 
     - name: Install pytest-regsmart
       run: |

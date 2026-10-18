@@ -51,7 +51,7 @@ jobs:
         uv pip freeze --system
 
     - name: Install reportlog
-      run: pip install pytest-reportlog
+      run: uv pip install pytest-reportlog
 
     - name: Restore pytest-regsmart cache
       id: restore-pytest-regsmart-cache

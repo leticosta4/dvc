@@ -53,7 +53,7 @@ jobs:
         uv pip freeze --system
 
     - name: Install reportlog
-      run: pip install pytest-reportlog
+      run: uv pip install --system pytest-reportlog
 
     - name: Restore pytest-ranking cache
       id: restore-pytest-ranking-cache
@@ -62,6 +62,8 @@ jobs:
       with:
         path: ${{ github.workspace }}/.pytest_cache/v/pytest_ranking_data
         key: pytest-ranking-cache-${{ github.workflow }}-${{ runner.os }}-${{ matrix.mode }}
+        restore-keys: |
+          pytest-ranking-cache-${{ github.workflow }}-${{ runner.os }}-${{ matrix.mode }}-
 
     - name: run tests (py312)
       timeout-minutes: 40

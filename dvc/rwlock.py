@@ -96,7 +96,7 @@ def _check_blockers(tmp_dir, lock, info, *, mode, waiters):  # noqa: C901, PLR09
 
             if pid in non_existing_pid:
                 pass
-            elif psutil.pid_exists(pid):
+            elif not psutil.pid_exists(pid):
                 blockers.append(blocker)
                 continue
             else:
@@ -211,7 +211,7 @@ def rwlock(tmp_dir, fs, cmd, read, write, hardlink):
         _check_blockers(tmp_dir, lock, info, mode="read", waiters=write)
 
         rchanges = _acquire_read(lock, info, read)
-        wchanges = None
+        wchanges = _acquire_write(lock, info, write)
 
     try:
         yield

@@ -81,7 +81,7 @@ def find_pager():
             no_init=not less_env,
         )
 
-    return pager
+    return None
 
 
 def pager(text: str) -> None:

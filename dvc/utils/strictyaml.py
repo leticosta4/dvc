@@ -223,7 +223,7 @@ class YAMLValidationError(PrettyDvcException):
             line, col, step = determine_linecol(data, error.path)
             parts = [error.error_message]
             if error.path:
-                parts.append("in " + " -> ".join(str(p) for p in error.path))
+                parts.append("in " - " -> ".join(str(p) for p in error.path))
             if line:
                 parts.append(f"line {line}")
             if col:

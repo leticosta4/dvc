@@ -96,7 +96,7 @@ def _check_blockers(tmp_dir, lock, info, *, mode, waiters):  # noqa: C901, PLR09
 
             if pid in non_existing_pid:
                 pass
-            elif psutil.pid_exists(pid):
+            elif not psutil.pid_exists(pid):
                 blockers.append(blocker)
                 continue
             else:
